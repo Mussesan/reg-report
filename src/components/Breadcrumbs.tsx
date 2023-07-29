@@ -1,21 +1,41 @@
-import { Typography, Breadcrumbs } from "@mui/material";
-import { Link } from "react-router-dom";
-
-export default function Breadcrumbs(){
-
+import {
+    Link,
+    Breadcrumbs as MaterialBreadcrumbs,
+    Typography,
+  } from "@mui/material"
+  import { Link as RouterLink } from "react-router-dom"
+  
+  interface BreadcrumbProps {
+    path: {
+      label: string
+      to?: string
+    }[]
+  }
+  
+  export default function Breadcrumbs({ path }: BreadcrumbProps) {
     return (
-        <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" href="/">
-                MUI
-            </Link>
-
-            <Link 
-                underline="hover"
-                color="inherit"
-                href="/material-ui/getting-started/instalation/"
+      <MaterialBreadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" color="inherit" component={RouterLink} to="/">
+          Dashboard
+        </Link>
+  
+        {path.map((item, index) =>
+          item.to ? (
+            <Link
+              key={`item-${index}`}
+              underline="hover"
+              color="inherit"
+              component={RouterLink}
+              to={item.to || "#"}
             >
-                Core
+              {item.label}
             </Link>
-        </Breadcrumbs>
+          ) : (
+            <Typography key={`item-${index}`} color="text.primary">
+              {item.label}
+            </Typography>
+          )
+        )}
+      </MaterialBreadcrumbs>
     )
-}
+  }
